@@ -3,6 +3,7 @@
 
 A distributed **E-Commerce application** built using **Spring Boot 3**, **Spring Cloud Netflix Eureka**, and **Docker Compose**.
 This project demonstrates real microservices architecture with separate services for **User**, **Product**, and **Cart** — each running in isolated containers and communicating via **OpenFeign** through a **Service Registry**.
+🚧 In Active Development...
 
 ---
 
