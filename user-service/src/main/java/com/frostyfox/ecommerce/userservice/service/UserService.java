@@ -6,21 +6,20 @@ import com.frostyfox.ecommerce.userservice.Dto.UserResponse;
 import com.frostyfox.ecommerce.userservice.dao.UserDao;
 import com.frostyfox.ecommerce.userservice.models.Address;
 import com.frostyfox.ecommerce.userservice.models.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
-    @Autowired
-    UserDao userDao;
+    private final UserDao userDao;
+    private final PasswordEncoder passwordEncoder;
 
     public ResponseEntity<String> addUser(UserRequest userRequest) {
         User user = new User();
@@ -35,6 +34,11 @@ public class UserService {
         user.setLastName(userRequest.getLastName());
         user.setEmail(userRequest.getEmail());
         user.setPhoneNumber(String.valueOf(userRequest.getPhoneNumber()));
+        
+        // Only update password if provided
+        if (userRequest.getPassword() != null && !userRequest.getPassword().isEmpty()) {
+            user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        }
 
         if(userRequest.getAddressDto() != null){
             Address address = new Address();

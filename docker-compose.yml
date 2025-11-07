@@ -41,6 +41,29 @@ services:
     networks:
       - microservices-network
 
+  gateway:
+    build:
+      context: ./gateway
+      dockerfile: Dockerfile
+    image: frostyfox77/ecom-gateway:0.5.0
+    container_name: ecom-gateway
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    ports:
+      - "8080:8080"
+    restart: on-failure
+    depends_on:
+      service-registry:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 40s
+    networks:
+      - microservices-network
+
   user-service:
     build:
       context: ./user-service
@@ -53,6 +76,8 @@ services:
     ports:
       - "8081:8081"
     depends_on:
+      gateway:
+        condition: service_healthy
       postgres:
         condition: service_healthy
       service-registry:
@@ -72,6 +97,8 @@ services:
     ports:
       - "8082:8082"
     depends_on:
+      gateway:
+        condition: service_healthy
       postgres:
         condition: service_healthy
       service-registry:
@@ -91,6 +118,8 @@ services:
     ports:
       - "8083:8083"
     depends_on:
+      gateway:
+        condition: service_healthy
       postgres:
         condition: service_healthy
       service-registry:
