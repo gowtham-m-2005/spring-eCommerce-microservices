@@ -53,7 +53,7 @@ This system currently consists of seven microservices:
          ↓                   ↓                   ↓
     ┌─────────┐      ┌──────────────┐     ┌──────────┐
     │ Gateway │      │ User Service │     │ Product  │
-    │  :8080  │      │    :8081     │     │ Service  │
+    │  8080   │      │              │     │ Service  │
     └────┬────┘      └──────┬───────┘     └────┬─────┘
          │                  │                   │
          └──────────────────┼───────────────────┘
@@ -217,5 +217,6 @@ DB_PASSWORD=your_password
 
 This project is **still in active development**, with core microservices containerized and running via Docker Compose.
 ---
+
 
 
